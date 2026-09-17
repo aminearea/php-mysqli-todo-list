@@ -19,7 +19,7 @@ $done = count(array_filter($todos, fn($t) => $t['is_completed']));
 </head>
 <body>
     <div class="container">
-        <h1>📝 Ma Todo List</h1>
+        <h1> Ma Todo List</h1>
         <p class="stats"><?= $done ?> / <?= $total ?> tâche(s) terminée(s)</p>
 
         <form class="add-form" action="add.php" method="POST">
@@ -28,7 +28,7 @@ $done = count(array_filter($todos, fn($t) => $t['is_completed']));
         </form>
 
         <?php if (empty($todos)): ?>
-            <p class="empty">Aucune tâche pour le moment. Ajoutez-en une ! 🎉</p>
+            <p class="empty">Aucune tâche pour le moment. Ajoutez-en une ! </p>
         <?php else: ?>
             <ul class="todo-list">
                 <?php foreach ($todos as $todo): ?>
