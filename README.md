@@ -1,53 +1,71 @@
-# 📝 Todo List PHP + MySQL (mysqli)
+# 📝 Todo List — PHP + MySQL (mysqli) + XAMPP
 
-Petite application Todo List en PHP procédural avec MySQL (XAMPP).
-Ajouter, terminer, modifier, supprimer des tâches.
+> Application web simple pour gérer ses tâches : ajouter, afficher, terminer, modifier, supprimer.
+> Projet débutant idéal pour apprendre **PHP + MySQL + GitHub**.
 
-## Prérequis
+![PHP](https://img.shields.io/badge/PHP-8.x-777BB4?style=flat&logo=php&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-MariaDB-4479A1?style=flat&logo=mysql&logoColor=white)
+![XAMPP](https://img.shields.io/badge/XAMPP-Apache-FB7A29?style=flat&logo=xampp&logoColor=white)
+![Status](https://img.shields.io/badge/Status-Fonctionnel-success)
 
-- XAMPP avec Apache + MySQL lancés (verts)
-- PHP 8.x, MariaDB / MySQL
-- Navigateur sur `http://localhost`
+---
 
-## Installation
+## ✨ Fonctionnalités
 
-1. Copier le dossier dans XAMPP :
-   `C:\xampp\htdocs\todo-list\`
+- [x] Ajouter une tâche
+- [x] Afficher toutes les tâches (plus récentes d'abord)
+- [x] Marquer terminée / annuler
+- [x] Modifier une tâche
+- [x] Supprimer avec confirmation
+- [x] Compteur `terminées / total`
+- [x] Design responsive simple
 
-2. Créer la base de données :
-   - Ouvrir `http://localhost/phpmyadmin`
-   - Créer la base `todo_list` en `utf8mb4_unicode_ci`
-   - Importer `database.sql` (ou copier son contenu dans l'onglet SQL)
+## 🛠️ Stack
 
-3. Vérifier la connexion dans `config/database.php` :
-   ```php
-   $host = 'localhost';
-   $user = 'root';
-   $pass = '';
-   $dbname = 'todo_list';
-   ```
+- **Front :** HTML5 + CSS3 pur (aucun framework)
+- **Back :** PHP 8 procédural + mysqli
+- **Base :** MySQL / MariaDB via phpMyAdmin
+- **Serveur local :** XAMPP (Apache + MySQL)
 
-4. Ouvrir l'app :
-   `http://localhost/todo-list/index.php`
+## 📁 Structure du projet
 
-## Structure
-
-```
+```text
 todo-list/
-├── index.php        -> affiche la liste (SELECT + foreach)
-├── add.php          -> ajoute (INSERT + POST)
-├── edit.php         -> modifie (SELECT puis UPDATE)
-├── delete.php       -> supprime (DELETE avec ?id)
-├── complete.php     -> termine / annule (UPDATE 1-is_completed)
+├── index.php          # Liste + formulaire + SELECT + foreach
+├── add.php            # INSERT (POST)
+├── edit.php           # SELECT par id + UPDATE
+├── delete.php         # DELETE par id
+├── complete.php       # UPDATE is_completed = 1 - is_completed
 ├── config/
-│   └── database.php -> connexion mysqli ($conn)
+│   └── database.php   # Connexion $conn = new mysqli(...)
 ├── css/
-│   └── style.css
-└── database.sql     -> création base + table todos
+│   └── style.css      # Design carte centrée
+├── database.sql       # Création base + table
+└── README.md
 ```
 
-## Table SQL
+## 🚀 Installation en 4 étapes
 
+### 1. Cloner / copier
+```bash
+# Option A : clone
+git clone https://github.com/aminearea/todo-list.git C:\xampp\htdocs\todo-list
+
+# Option B : copie manuelle du dossier vers :
+C:\xampp\htdocs\todo-list\
+```
+
+### 2. Lancer XAMPP
+- Ouvre **XAMPP Control Panel**
+- Start **Apache** (port 80) → vert
+- Start **MySQL** (port 3306) → vert
+
+### 3. Créer la base
+1. Va sur http://localhost/phpmyadmin
+2. Crée base `todo_list` en `utf8mb4_unicode_ci`
+3. Onglet **Importer** → choisis `database.sql` → Exécuter
+
+Ou colle ça dans l'onglet SQL :
 ```sql
 CREATE DATABASE IF NOT EXISTS todo_list CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE todo_list;
@@ -59,8 +77,50 @@ CREATE TABLE IF NOT EXISTS todos (
 );
 ```
 
-## Sécurité
+### 4. Config + lancement
+Vérifie `config/database.php` :
+```php
+$host   = 'localhost';
+$user   = 'root';
+$pass   = '';
+$dbname = 'todo_list';
+$conn = new mysqli($host, $user, $pass, $dbname);
+```
 
-- Requêtes préparées `prepare(?)+ bind_param + execute`
-- `htmlspecialchars()` à l'affichage
-- `(int)` sur `$_GET['id']`
+Ouvre : **http://localhost/todo-list/index.php**
+
+## 🧠 Comment ça marche ? (pour débutant PHP)
+
+1. `database.php` crée `$conn`, le tuyau vers MySQL
+2. `index.php` fait `query(SELECT)` → `fetch_all()` → `foreach` en HTML
+3. Formulaire en `POST` → `add.php` fait `prepare(INSERT ?)` + `bind_param("s")`
+4. Boutons avec `?id=3` → `$_GET['id']` lu dans `delete/complete/edit.php`
+5. Après chaque action : `header('Location: index.php')` pour revenir à la liste
+
+Détail fichier par fichier dans le code (commentaires en français).
+
+## 🔒 Sécurité
+
+- Requêtes préparées : `prepare(?) + bind_param + execute` → anti-injection SQL
+- `(int)` sur `$_GET['id']` → force un nombre
+- `htmlspecialchars()` à l'affichage → anti-XSS
+- `trim()` + contrôle vide avant INSERT/UPDATE
+
+## 🗺️ Idées d'amélioration
+
+- [ ] Recherche + filtre (toutes / actives / terminées)
+- [ ] Dates limites + priorité
+- [ ] Pagination
+- [ ] Auth multi-utilisateurs
+- [ ] Version PDO + version API JSON
+- [ ] Dark mode
+
+## 👤 Auteur
+
+**aminearea** — https://github.com/aminearea/todo-list
+
+Projet d'apprentissage PHP/MySQL. N'hésite pas à forker et proposer des PR !
+
+## 📄 Licence
+
+MIT — libre d'utilisation pour apprendre et modifier.
